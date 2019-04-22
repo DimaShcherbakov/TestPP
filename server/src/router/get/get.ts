@@ -4,7 +4,8 @@ const LIMIT = 10;
 const getHandler = (req, res) => {
   const { page, limit } = req.query;
   let lim = limit;
-  if (limit === undefined || limit >= LIMIT) {
+  console.log(limit)
+  if (lim === 'undefined' || lim === undefined|| lim >= LIMIT) {
     lim = LIMIT;
     Article1.find()
       .sort({ createdAt: -1 })
@@ -13,7 +14,7 @@ const getHandler = (req, res) => {
           count: articles.length,
           page,
           limit: lim,
-          articles: articles.slice(page - 1, lim)
+          articles: articles.slice(0, lim)
         })
       )
       .catch(err => res.status(404).json({ error: "No notes found" }));
@@ -25,7 +26,7 @@ const getHandler = (req, res) => {
           count: articles.length,
           page,
           limit,
-          articles: articles.slice(page - 1, limit)
+          articles: articles.slice(0, lim)
         })
       )
       .catch(err => res.status(404).json({ error: "No notes found" }));

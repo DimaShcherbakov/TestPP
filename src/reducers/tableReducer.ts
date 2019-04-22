@@ -28,6 +28,11 @@ interface IFailure extends AnyAction {
   type: ITypes["FAILURE"];
 }
 
+interface IObj {
+  page: number;
+  limit: string;
+}
+
 interface IActions {
   success(
     data: {
@@ -39,13 +44,13 @@ interface IActions {
     }[],
     countItems: number
   ): ISuccess;
-  load(page: number, limit: number): ILoad;
+  load(obj: IObj): ILoad;
   failure(): IFailure;
 }
 // <ITypes, IActions>
 export const { Types, Creators } = createActions({
   success: ["data", "countItems"],
-  load: ["page", "limit"],
+  load: ["obj"],
   failure: []
 });
 

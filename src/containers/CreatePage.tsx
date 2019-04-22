@@ -27,7 +27,7 @@ class CreatePage extends React.Component<IProps, IState> {
     const { addNote } = this.props;
     const { success } = this.props.createState;
     if (success) {
-      return <Redirect to="/articles" />;
+      return <Redirect to="/articles?page=1" />;
     }
     return (
       <main>

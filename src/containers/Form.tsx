@@ -75,7 +75,7 @@ class Form extends React.Component<IProps, IState> {
         </div>
         <div className="d-flex justify-content-center my-2">
           <input className="btn btn-light" type="submit" value="Create" />
-          <Link to="/articles">
+          <Link to="/articles?page=1">
             <button className="btn btn-light">Cancel</button>
           </Link>
         </div>

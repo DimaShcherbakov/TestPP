@@ -6,9 +6,9 @@ const { LOAD } = Types;
 
 function* handleLoading(action: any): IterableIterator<any> {
   try {
-    // const payload = action.data;
-    // const data = yield call(getDataToTable);
-    // yield put(Creators.success(data.article));
+    const payload = action.obj;
+    const data = yield call(getDataToTable, payload);
+    yield put(Creators.success(data.articles));
   } catch (err) {
     yield put(Creators.failure());
   }
