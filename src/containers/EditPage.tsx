@@ -1,20 +1,61 @@
 import React from "react";
 import Form from "./Form";
+import { Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { Creators } from '../reducers/editReducer';
 
 interface IState {
   title: string;
 }
 
-interface IProps {}
+interface IProps {
+  editState: {
+    loading: boolean;
+    failure: boolean;
+    success: boolean;
+  };
+  match: {
+    params: {
+      id: string | undefined;
+    }
+  };
+  editNote(data: IData): () => object;
+}
 
 class EditPage extends React.Component<IProps, IState> {
   state = {
-    title: "Article/Edit"
+    title: "Edit"
   };
 
   public render() {
     const { title } = this.state;
-    return <main>{/* <Form header={title} /> */}</main>;
+    const { editNote } = this.props;
+    const { success } = this.props.editState;
+    const { id } = this.props.match.params;
+    if (success) {
+      return <Redirect to="/articles?page=1" />;
+    }
+    return (
+      <main>
+        <Form header={title} handler={editNote} id={id}/>
+      </main>
+    )
   }
 }
-export default EditPage;
+
+interface IData {
+  title: string;
+  body: string;
+  id: string;
+}
+
+const mapStateToProps = (state: any) => ({
+  editState: state.editState
+});
+
+const mapDispatchToProps = (dispatch: any) => ({
+  editNote: (data: IData) => dispatch(Creators.update_data(data))
+});
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(EditPage);

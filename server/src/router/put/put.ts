@@ -6,7 +6,6 @@ const putHandler = (req, res) => {
   console.log(req.body)
   Article2.findOne({ _id: id })
     .then(article => {
-      console.log(article)
       article.title = title;
       article.body = body;
       article.save()

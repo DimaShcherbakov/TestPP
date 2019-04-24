@@ -10,10 +10,12 @@ interface IState {
 interface IData {
   title: string;
   body: string;
+  id: string | undefined;
 }
 
 interface IProps {
   header: string;
+  id: string | undefined;
   handler(data: IData): any;
 }
 
@@ -25,8 +27,20 @@ class Form extends React.Component<IProps, IState> {
 
   public formHandler = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    const { handler } = this.props;
-    handler({ ...this.state });
+    const { handler,id } = this.props;
+    const { body, title } = this.state;
+    if (id) {
+      handler({
+        body,
+        title,
+        id,
+      });
+    } else {
+      handler({
+        ...this.state,
+        id
+      });
+    }
   };
 
   public handleUserInput = (e: React.FormEvent<HTMLInputElement>): void => {
@@ -35,9 +49,7 @@ class Form extends React.Component<IProps, IState> {
     this.setState({ [name]: value });
   };
 
-  public handleTextAreaInput = (
-    e: React.FormEvent<HTMLTextAreaElement>
-  ): void => {
+  public handleTextAreaInput = (e: React.FormEvent<HTMLTextAreaElement>): void => {
     const { name } = e.currentTarget;
     const { value } = e.currentTarget;
     this.setState({ [name]: value });
@@ -49,7 +61,7 @@ class Form extends React.Component<IProps, IState> {
     return (
       <form className="col-sm-6" action="" onSubmit={this.formHandler}>
         <div>
-          <h2 className="h2">{header}</h2>
+          <h2 className="h2">Article/{header}</h2>
           <div className="d-flex flex-column w-50">
             <label htmlFor="userInput">Title</label>
             <input
@@ -74,7 +86,7 @@ class Form extends React.Component<IProps, IState> {
           </div>
         </div>
         <div className="d-flex justify-content-center my-2">
-          <input className="btn btn-light" type="submit" value="Create" />
+          <input className="btn btn-light" type="submit" value={header} />
           <Link to="/articles?page=1">
             <button className="btn btn-light">Cancel</button>
           </Link>

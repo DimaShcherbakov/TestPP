@@ -1,36 +1,45 @@
 const Article1 = require("../../DB/models/article.ts");
-const LIMIT = 10;
+const LIMIT = '10';
+const PAGE = '1';
 
 const getHandler = (req, res) => {
   const { page, limit } = req.query;
-  let lim = limit;
-  console.log(limit)
-  if (lim === 'undefined' || lim === undefined|| lim >= LIMIT) {
-    lim = LIMIT;
-    Article1.find()
-      .sort({ createdAt: -1 })
-      .then(articles =>
-        res.status(200).send({
-          count: articles.length,
-          page,
-          limit: lim,
-          articles: articles.slice(0, lim)
-        })
-      )
-      .catch(err => res.status(404).json({ error: "No notes found" }));
-  } else {
-    Article1.find()
-      .sort({ createdAt: -1 })
-      .then(articles =>
-        res.status(200).send({
-          count: articles.length,
-          page,
-          limit,
-          articles: articles.slice(0, lim)
-        })
-      )
-      .catch(err => res.status(404).json({ error: "No notes found" }));
+  let lim = String(limit);
+  let pag = String(page);
+  let currentPage = 0;
+  let currentLimit = 0;
+  console.log(pag, lim)
+  if (pag === 'undefined' && lim === 'undefined') {
+    currentPage = parseInt(PAGE, 10);
+    currentLimit = parseInt(LIMIT, 10);
+  } else if (parseInt(pag, 10) !== 0 && parseInt(lim, 10) !== 0){
+    currentLimit = parseInt(lim, 10);
+    currentPage = parseInt(pag, 10);
   }
+  if (pag === 'undefined' && lim !== 'undefined') {
+    currentPage = parseInt(PAGE, 10);
+    currentLimit = parseInt(lim, 10);
+  }
+  if (pag !== 'undefined' && lim === 'undefined') {
+    currentPage = parseInt(pag, 10);
+    currentLimit = parseInt(LIMIT, 10);
+  }
+  Article1.find()
+    .sort({ createdAt: -1 })
+    .then(articles =>
+      res.status(200).send({
+        count: articles.length,
+        page: currentPage,
+        limit: currentLimit,
+        articles: articles.slice(currentPage - 1, currentLimit + currentPage - 1)
+      })
+    )
+    .catch(err => res.status(404).json({
+      errors: [{  
+          field: 'title',
+          error: 'title is required',
+      }]
+  }));
 };
 
 const getHandlerID = (req, res) => {

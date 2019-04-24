@@ -1,15 +1,16 @@
 import React from "react";
 import { connect } from 'react-redux';
-import { Link, Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import queryString from "query-string";
 import { Creators } from '../reducers/tableReducer';
+import PopupForm from './PopupForm';
 
 interface IProps {
   location: {
     pathname: string;
     search: string;
   };
-  getDataToTable(data: IData): () => void;
+  getDataToTable(data: IData): () => void
   tableState: {
     loading: boolean;
     failure: boolean;
@@ -47,16 +48,9 @@ class MainPage extends React.Component<IProps, IState> {
     const { location } = this.props;
     const pathParams: any = queryString.parse(location.search);
     const { page, limit } = pathParams;
-    if (page && limit) {
-      return {
-        page, limit
-      }
-    } else {
-      return {
-        page,
-        limit: undefined,
-      }
-    }
+    return {
+      page, limit
+    } 
   }
 
   public renderRows = () => {
@@ -110,7 +104,7 @@ class MainPage extends React.Component<IProps, IState> {
   };
 
   public render() {
-    console.log(this.props.tableState)
+    // console.log(this.props.tableState)
     return (
       <main className="container">
         <div className="row justify-content-between align-items-center">
@@ -133,6 +127,7 @@ class MainPage extends React.Component<IProps, IState> {
         <nav aria-label="Page navigation example">
           <ul className="pagination">{this.renderPagination()}</ul>
         </nav>
+        <PopupForm/>
       </main>
     );
   }
@@ -143,8 +138,8 @@ const mapStateToProps = (state: any) => ({
 });
 
 interface IData {
-  page: number;
-  limit: string;
+  page: number | undefined;
+  limit: number | undefined;
 }
 
 const mapDispatchToProps = (dispatch: any) => ({
