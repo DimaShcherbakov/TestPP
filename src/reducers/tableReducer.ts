@@ -1,11 +1,11 @@
-import { AnyAction } from "redux";
-import { createReducer, createActions } from "reduxsauce";
+import { AnyAction } from 'redux';
+import { createReducer, createActions } from 'reduxsauce';
 
 interface ITypes {
   SUCCESS: "SUCCESS";
   FAILURE: "FAILURE";
   LOAD: "LOAD";
-}
+};
 
 interface ISuccess extends AnyAction {
   type: ITypes["SUCCESS"];
@@ -16,22 +16,22 @@ interface ISuccess extends AnyAction {
     createdAt: string;
     updatedAt: string;
   }[];
-}
+};
 
 interface ILoad extends AnyAction {
   type: ITypes["LOAD"];
-  page: number;
-  limit: number;
-}
+  page: number | undefined;
+  limit: number | undefined;
+};
 
 interface IFailure extends AnyAction {
   type: ITypes["FAILURE"];
-}
+};
 
 interface IObj {
-  page: number;
-  limit: string;
-}
+  page: number | undefined;
+  limit: number | undefined;
+};
 
 interface IActions {
   success(
@@ -42,14 +42,13 @@ interface IActions {
       createdAt: string;
       updatedAt: string;
     }[],
-    countItems: number
   ): ISuccess;
   load(obj: IObj): ILoad;
   failure(): IFailure;
 }
-// <ITypes, IActions>
-export const { Types, Creators } = createActions({
-  success: ["data", "countItems"],
+
+export const { Types, Creators } = createActions<ITypes, IActions>({
+  success: ["data"],
   load: ["obj"],
   failure: []
 });
@@ -65,7 +64,7 @@ interface IState {
     updatedAt: string;
   }[];
   countItems: number;
-}
+};
 
 const INITIAL_STATE: IState = {
   loading: false,

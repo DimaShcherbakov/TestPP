@@ -1,6 +1,6 @@
-import { takeEvery, call, put } from "redux-saga/effects";
-import { Types, Creators } from "../reducers/createReducer";
-import { addNote } from "../queries/index";
+import { takeEvery, call, put } from 'redux-saga/effects';
+import { Types, Creators } from '../reducers/createReducer';
+import { addNote } from '../queries/index';
 
 const { UPLOAD_DATA } = Types;
 

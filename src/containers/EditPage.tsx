@@ -1,8 +1,8 @@
-import React from "react";
-import Form from "./Form";
+import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Creators } from '../reducers/editReducer';
+import Form from './Form';
 
 interface IState {
   title: string;
@@ -20,6 +20,7 @@ interface IProps {
     }
   };
   editNote(data: IData): () => object;
+  clearData(): () => object;
 }
 
 class EditPage extends React.Component<IProps, IState> {
@@ -27,13 +28,18 @@ class EditPage extends React.Component<IProps, IState> {
     title: "Edit"
   };
 
-  public render() {
+  public componentWillUnmount(){
+    const { clearData } = this.props;
+    clearData();
+  };
+
+  public render(){
     const { title } = this.state;
     const { editNote } = this.props;
     const { success } = this.props.editState;
     const { id } = this.props.match.params;
     if (success) {
-      return <Redirect to="/articles?page=1" />;
+      return <Redirect to="/articles?page=1"/>;
     }
     return (
       <main>
@@ -41,7 +47,7 @@ class EditPage extends React.Component<IProps, IState> {
       </main>
     )
   }
-}
+};
 
 interface IData {
   title: string;
@@ -54,8 +60,12 @@ const mapStateToProps = (state: any) => ({
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-  editNote: (data: IData) => dispatch(Creators.update_data(data))
+  editNote: (data: IData) => dispatch(Creators.update_data(data)),
+  clearData: () => dispatch(Creators.clear_data())
 });
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(EditPage);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(EditPage);

@@ -1,15 +1,16 @@
-import { AnyAction } from "redux";
-import { createReducer, createActions } from "reduxsauce";
+import { AnyAction } from 'redux';
+import { createReducer, createActions } from 'reduxsauce';
 
 interface ITypes {
   SUCCESS_UPLOAD: "SUCCESS_UPLOAD";
   FAILURE_UPLOAD: "FAILURE_UPLOAD";
   UPLOAD_DATA: "UPLOAD_DATA";
-}
+  CLEAR_DATA: "CLEAR_DATA";
+};
 
 interface ISuccess extends AnyAction {
   type: ITypes["SUCCESS_UPLOAD"];
-}
+};
 
 interface ILoad extends AnyAction {
   type: ITypes["UPLOAD_DATA"];
@@ -17,22 +18,32 @@ interface ILoad extends AnyAction {
     title: string;
     body: string;
   };
-}
+};
 
 interface IFailure extends AnyAction {
   type: ITypes["FAILURE_UPLOAD"];
-}
+};
+
+interface IFailure extends AnyAction {
+  type: ITypes["FAILURE_UPLOAD"];
+};
+
+interface IClear extends AnyAction {
+  type: ITypes["CLEAR_DATA"];
+};
 
 interface IActions {
   success_upload(): ISuccess;
   upload_data(data: { title: string; body: string }): ILoad;
   failure_upload(): IFailure;
-}
-// <ITypes, IActions>
-export const { Types, Creators } = createActions({
+  clear_data(): IClear;
+};
+
+export const { Types, Creators } = createActions<ITypes, IActions>({
   success_upload: [],
   upload_data: ["data"],
-  failure_upload: []
+  failure_upload: [],
+  clear_data: [],
 });
 
 interface IState {
@@ -70,10 +81,17 @@ const failure = (state = INITIAL_STATE, action: IFailure) => {
   };
 };
 
+const clearState = (state = INITIAL_STATE, action: IClear) => {
+  return {
+    ...INITIAL_STATE
+  };
+};
+
 export const HANDLERS: any = {
   [Types.SUCCESS_UPLOAD]: success,
   [Types.FAILURE_UPLOAD]: failure,
-  [Types.UPLOAD_DATA]: load
+  [Types.UPLOAD_DATA]: load,
+  [Types.CLEAR_DATA]: clearState,
 };
 
 const createNoteReducer = createReducer(INITIAL_STATE, HANDLERS);

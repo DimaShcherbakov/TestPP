@@ -1,5 +1,5 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React from 'react';
+import { Link } from 'react-router-dom';
 
 interface IState {
   title: string;
@@ -21,8 +21,8 @@ interface IProps {
 
 class Form extends React.Component<IProps, IState> {
   state = {
-    title: "",
-    body: ""
+    title: '',
+    body: ''
   };
 
   public formHandler = (e: React.FormEvent<HTMLFormElement>): void => {
@@ -40,7 +40,7 @@ class Form extends React.Component<IProps, IState> {
         ...this.state,
         id
       });
-    }
+    };
   };
 
   public handleUserInput = (e: React.FormEvent<HTMLInputElement>): void => {
@@ -70,6 +70,7 @@ class Form extends React.Component<IProps, IState> {
               name="title"
               onChange={this.handleUserInput}
               value={title}
+              required
             />
           </div>
           <div className="d-flex flex-column">
@@ -82,6 +83,7 @@ class Form extends React.Component<IProps, IState> {
               value={body}
               placeholder="Article body..."
               onChange={this.handleTextAreaInput}
+              required
             />
           </div>
         </div>
@@ -93,7 +95,7 @@ class Form extends React.Component<IProps, IState> {
         </div>
       </form>
     );
-  }
+  };
 }
 
 export default Form;

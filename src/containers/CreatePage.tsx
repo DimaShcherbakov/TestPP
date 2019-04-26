@@ -1,8 +1,8 @@
-import React from "react";
-import { connect } from "react-redux";
-import { Creators } from "../reducers/createReducer";
-import { Redirect } from "react-router-dom";
-import Form from "./Form";
+import React from 'react';
+import { connect } from 'react-redux';
+import { Creators } from '../reducers/createReducer';
+import { Redirect } from 'react-router-dom';
+import Form from './Form';
 
 interface IState {
   title: string;
@@ -18,8 +18,9 @@ interface IProps {
     params: {
       id: string | undefined;
     }
-  }
+  };
   addNote(data: IData): () => object;
+  clearData(): () => object;
 }
 
 class CreatePage extends React.Component<IProps, IState> {
@@ -27,13 +28,18 @@ class CreatePage extends React.Component<IProps, IState> {
     title: "Create"
   };
 
+  public componentWillUnmount(){
+    const { clearData } = this.props;
+    clearData();
+  }
+
   public render() {
     const { title } = this.state;
     const { addNote } = this.props;
     const { success } = this.props.createState;
     const { id } = this.props.match.params;
     if (success) {
-      return <Redirect to="/articles?page=1" />;
+      return <Redirect to="/articles?page=1"/>;
     }
     return (
       <main>
@@ -41,19 +47,20 @@ class CreatePage extends React.Component<IProps, IState> {
       </main>
     );
   }
-}
+};
 
 interface IData {
   title: string;
   body: string;
-}
+};
 
 const mapStateToProps = (state: any) => ({
   createState: state.createState
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-  addNote: (data: IData) => dispatch(Creators.upload_data(data))
+  addNote: (data: IData) => dispatch(Creators.upload_data(data)),
+  clearData: () => dispatch(Creators.clear_data())
 });
 
 export default connect(

@@ -20,3 +20,14 @@ header {
 .paginate-active {
   background-color: blue;
 }
+
+.position-absolute {
+  left: 14%;
+  top: 26%;
+}
+.pointer{
+  cursor: pointer;
+}
+.artic{
+  min-height: 200px;
+}

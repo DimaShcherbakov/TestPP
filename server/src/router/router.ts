@@ -1,5 +1,4 @@
 const express = require('express');
-
 const getRoot = require('./get/get.ts');
 const postRoot = require('./post/post.ts');
 const putRoot = require('./put/put.ts');

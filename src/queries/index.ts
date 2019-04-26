@@ -1,29 +1,29 @@
-import axios from "../utils/axios";
+import axios from '../utils/axios';
 
 interface IData {
   title: string;
   body: string;
-}
+};
 
 interface IObj {
   page: number;
   limit: string;
-}
+};
 
 interface IEditData {
   body: string;
   title: string;
   id: string;
-}
+};
 
-export const getDataToTable = async (obj:IObj) => {
+export const getDataToTable = async (obj: IObj) => {
   const { page, limit } = obj;
   try {
     const res = await axios.get(`/articles?page=${page}&limit=${limit}`);
     return res.data;
   } catch (err) {
     throw new Error(err)
-  }
+  };
 };
 
 export const addNote = async (data: IData) => {
@@ -32,12 +32,12 @@ export const addNote = async (data: IData) => {
     return res.data;
   } catch (err) {
     throw new Error(err);
-  }
+  };
 };
 
 export const editNote = async (data: IEditData) => {
+  const { id, body, title } = data;
   try {
-    const { id, body, title } = data;
     const res = await axios.put(`/articles/${id}`, {
       body,
       title,
@@ -45,5 +45,14 @@ export const editNote = async (data: IEditData) => {
     return res.data;
   } catch (err) {
     throw new Error(err);
-  }
+  };
+};
+
+export const getNote = async (id: string) => {
+  try {
+    const res = await axios.get(`/articles/${id}`);
+    return res.data;
+  } catch (err) {
+    throw new Error(err);
+  };
 };

@@ -1,6 +1,6 @@
-import { takeEvery, call, put } from "redux-saga/effects";
-import { Types, Creators } from "../reducers/tableReducer";
-import { getDataToTable } from "../queries/index";
+import { takeEvery, call, put } from 'redux-saga/effects';
+import { Types, Creators } from '../reducers/tableReducer';
+import { getDataToTable } from '../queries/index';
 
 const { LOAD } = Types;
 
@@ -11,11 +11,11 @@ function* handleLoading(action: any): IterableIterator<any> {
     yield put(Creators.success(data.articles));
   } catch (err) {
     yield put(Creators.failure());
-  }
-}
+  };
+};
 
 function* watchData(): IterableIterator<any> {
   yield takeEvery(LOAD, handleLoading);
-}
+};
 
 export default watchData;
